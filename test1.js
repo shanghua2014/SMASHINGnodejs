@@ -1,5 +1,3 @@
-console.log(1);
-process.nextTick(function () {
-    console.log(3);
-});
-console.log(2);
+var mybuffer = new Buffer('==ii1j2i3h1i23h', 'base64');
+console.log(mybuffer);
+require('fs').writeFile('logo.png', mybuffer);
