@@ -1,4 +1,6 @@
-var fs = require('fs');
+var fs = require('fs'),
+    stdin = process.stdin,
+    stdout = process.stdout;
 
 fs.readdir(process.cwd(), function (error, files) {
     console.log('');
@@ -17,15 +19,27 @@ fs.readdir(process.cwd(), function (error, files) {
                 console.log(' ' +i+ '\033[90m' +filename+ '\033[39m')
             }
             
-            i++;
-            if (i == files.length) {
-                console.log('');
-                process.stdout.write(' \033[33mEnter your choice：\033[39m');
-                process.stdin.resume();
+            if (++i == files.length) {
+                read();
             } else {
                 file(i);
             }
         });
+    }
+
+    function read () {
+        console.log('');
+        stdout.write(' \033[33mEnter your choice：\033[39m');
+        stdout.resume();
+        stdout.setEncoding('utf8');
+        stdout.on('data', option);
+    }
+    function option (data) {
+        if (!files[Number(data)]) {
+            stdout.write(' \033[31nodmEnter your choice：\033[39m');
+        } else {
+            stdout.pause();
+        }
     }
 
     file(0);
